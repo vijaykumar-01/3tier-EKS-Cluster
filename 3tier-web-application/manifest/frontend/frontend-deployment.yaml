@@ -1,0 +1,35 @@
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: dev
+  labels:
+    app: web
+spec:
+  replicas: 2
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: 730335512772.dkr.ecr.us-west-2.amazonaws.com/dev:latest
+          # Requests and resources
+          resources:
+            requests:
+              cpu: 100m
+              memory: 300Mi
+            limits:
+              cpu: 250m
+              memory: 1Gi
+      tolerations:
+        - effect: NoSchedule
+          key: MelorraApps
+          operator: Equal
+          value: "true"
